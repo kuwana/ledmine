@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Ledmine::VERSION
   spec.authors       = ["sankitch"]
   spec.email         = ["i@sankitch.me"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Redmine client for lazy.}
+  spec.summary       = %q{Redmine client for lazy.}
   spec.homepage      = ""
   spec.license       = "MIT"
 

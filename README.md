@@ -1,6 +1,6 @@
 # Ledmine
 
-TODO: Write a gem description
+Redmine client for lazy.
 
 ## Installation
 
