@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["i@sankitch.me"]
   spec.description   = %q{Redmine client for lazy.}
   spec.summary       = %q{Redmine client for lazy.}
-  spec.homepage      = ""
+  spec.homepage      = "http://www.sankitch.me/ledmine/"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
