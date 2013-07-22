@@ -1,5 +1,6 @@
 require 'ledmine/version'
 require 'ledmine/redmine'
+require 'ledmine/issues'
 require 'json'
 require 'thor'
 
@@ -38,14 +39,8 @@ module Ledmine
       puts JSON.pretty_generate(@config)
     end
 
-    desc "view", "View issue."
-    method_options project_id: :string
-    def view(issue_id)
-      issue = JSON.parse(Redmine.get_issue(issue_id))
-      say("#" + issue["issue"]["id"].to_s + " " + issue["issue"]["subject"])
-    end
+    register(Ledmine::Issues, "view", "view [ID]", "View details. [default] issues.")
     
-
     def initialize(*args)
       super
       if ( check() )
