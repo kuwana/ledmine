@@ -27,6 +27,26 @@ module Ledmine
       }
     end
 
+    def self.get_issues(account = "default")
+      self.load_config()
+      config = @config[account]
+      url = URI.parse( config["url"] + "issues.json" )
+      http = Net::HTTP.new(url.host, url.port)
+      http.start{|http|
+        req = Net::HTTP::Get.new(url.path)
+        req.add_field 'Accept', 'application/json'
+        req.add_field 'Content-Type', 'application/json'
+        req.add_field 'X-Redmine-API-Key', config["api_key"]
+        req.body = {
+            "issue" => {
+              "assigned_to_id" => 4
+            }
+        }.to_json
+        res = http.request(req)
+        return res.body
+      }
+    end
+
     def self.create_issue(subject, account = "default")
       self.load_config()
       config = @config[account]
@@ -60,6 +80,7 @@ module Ledmine
         req.add_field 'X-Redmine-API-Key', config["api_key"]
         req.body = {
             "issue" => {
+                "done_ratio" => 100,
                 "status_id" => 5
             }
         }.to_json
