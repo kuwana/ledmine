@@ -47,5 +47,25 @@ module Ledmine
         return res.body
       }
     end
+
+    def self.close_issue(id, account = "default")
+      self.load_config()
+      config = @config[account]
+      url = URI.parse( config["url"] + "issues/" + id + ".json" )
+      http = Net::HTTP.new(url.host, url.port)
+      http.start{|http|
+        req = Net::HTTP::Put.new(url.path)
+        req.add_field 'Accept', 'application/json'
+        req.add_field 'Content-Type', 'application/json'
+        req.add_field 'X-Redmine-API-Key', config["api_key"]
+        req.body = {
+            "issue" => {
+                "status_id" => 5
+            }
+        }.to_json
+        res = http.request(req)
+        return res.body
+      }
+    end
   end
 end

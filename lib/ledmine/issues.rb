@@ -11,8 +11,12 @@ module Ledmine
 
     desc 'create', 'Create issue.'
     def create(subject)
-      issue = JSON.parse(Redmine.create_issue(subject))
-      puts issue
+      Redmine.create_issue(subject)
+    end
+
+    desc 'close', 'Close issue.'
+    def close(id)
+      Redmine.close_issue(id)
     end
   end
 end
