@@ -7,23 +7,17 @@ require 'thor'
 module Ledmine
   attr_accessor :config
   class CLI < Thor
+    include Thor::Actions
+
     desc "init", "Generate ~/.ledmine.json interactive."
     def init()
       json = {}
       redmine = {}
       say('Redimne Settings')
 
-      say('redmine url: ')
-      url = STDIN.gets
-      redmine['url'] = url.chomp
-
-      say('api key: ')
-      api_key = STDIN.gets
-      redmine['api_key'] = api_key.chomp
-
-      say('default project id or key: ')
-      default_project_id = STDIN.gets
-      redmine['default_project_id'] = default_project_id.chomp
+      redmine['url'] = ask("redmine url:")
+      redmine['api_key'] = ask("api key:")
+      redmine['default_project_id'] = ask("default project id or key:")
 
       json["default"] = redmine
 
@@ -39,7 +33,7 @@ module Ledmine
       puts JSON.pretty_generate(@config)
     end
 
-    register(Ledmine::Issues, "view", "view [ID]", "View details. [default] issues.")
+    register(Ledmine::Issues, "view", "view", "View details. [default] issues.")
     
     def initialize(*args)
       super
