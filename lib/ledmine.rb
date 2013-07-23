@@ -9,7 +9,9 @@ module Ledmine
   class CLI < Thor
     include Thor::Actions
 
-    desc "init", "Generate ~/.ledmine.json interactive."
+    LEDMINE_CONFIG_FILENAME = ".ledmine.json"
+
+    desc "init", "Generate ~/#{LEDMINE_CONFIG_FILENAME} interactive."
     def init()
       json = {}
       redmine = {}
@@ -21,16 +23,21 @@ module Ledmine
 
       json["default"] = redmine
 
-      File.open(ENV["HOME"] + '/.ledmine.json', 'w') do |file|
+      File.open(ENV["HOME"] + "/#{LEDMINE_CONFIG_FILENAME}", 'w') do |file|
         file.write( JSON.pretty_generate( json ) )
       end
 
-      say('Generated ~/.ledmine.json')
+      say("Generated ~/#{LEDMINE_CONFIG_FILENAME}")
     end
 
-    desc "dump", "Dump ~/.ledmine.json."
+    desc "dump", "Dump ~/#{LEDMINE_CONFIG_FILENAME}."
     def dump()
       puts JSON.pretty_generate(@config)
+    end
+
+    desc "view", "View issue detail."
+    def view(id)
+        Ledmine::Issues.new.view id
     end
 
     register Ledmine::Issues, :issues, "issues [SOMETHING]", "Issues."
@@ -38,7 +45,7 @@ module Ledmine
     def initialize(*args)
       super
       if ( check() )
-        @config = open(ENV["HOME"]+"/.ledmine.json") do |config|
+        @config = open(ENV["HOME"]+"/#{LEDMINE_CONFIG_FILENAME}") do |config|
           JSON.load(config)
           end
       end
@@ -46,7 +53,7 @@ module Ledmine
 
     private
     def check()
-        return File.exist?(ENV["HOME"]+"/.ledmine.json")
+        return File.exist?(ENV["HOME"]+"/#{LEDMINE_CONFIG_FILENAME}")
     end
   end
 end
