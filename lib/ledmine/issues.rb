@@ -20,12 +20,15 @@ module Ledmine
       Redmine.close_issue(id)
     end
 
+    method_option :csv, :type => :boolean
     desc 'list', 'List issues.'
     def list()
+        s = options[:csv] ? "," : "\t"
+        say("issue no" + s + "assinged to" + s + "title")
         JSON.parse(Redmine.get_issues())["issues"].each do |issue|
           assigned_to_name = "(Not assigned)" if issue["assigned_to"].nil?
           assigned_to_name = issue["assigned_to"]["name"] unless issue["assigned_to"].nil?
-          say("#" + issue["id"].to_s + "\t" + assigned_to_name + "\t" + issue["subject"])
+          say("#" + issue["id"].to_s + s + assigned_to_name + s + issue["subject"])
         end
     end
   end
