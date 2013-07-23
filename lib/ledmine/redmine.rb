@@ -47,7 +47,7 @@ module Ledmine
       }
     end
 
-    def self.create_issue(subject, account = "default")
+    def self.create_issue(subject, desc, account = "default")
       self.load_config()
       config = @config[account]
       url = URI.parse( config["url"] + "issues.json" )
@@ -60,7 +60,8 @@ module Ledmine
         req.body = {
             "issue" => {
               "project_id" => config["default_project_id"],
-              "subject" => subject
+              "subject" => subject,
+              "description" => desc
             }
         }.to_json
         res = http.request(req)

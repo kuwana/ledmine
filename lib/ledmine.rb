@@ -32,16 +32,11 @@ module Ledmine
 
     desc "dump", "Dump ~/#{LEDMINE_CONFIG_FILENAME}."
     def dump()
-      puts JSON.pretty_generate(@config)
-    end
-
-    desc "view", "View issue detail."
-    def view(id)
-        Ledmine::Issues.new.view id
+      say(JSON.pretty_generate(@config))
     end
 
     register Ledmine::Issues, :issues, "issues [SOMETHING]", "Issues."
-    
+
     def initialize(*args)
       super
       if ( check() )

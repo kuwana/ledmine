@@ -12,7 +12,7 @@ module Ledmine
 
     desc 'create SUBJECT [DESC]', 'Create issue.'
     def create(subject, desc = "")
-      Redmine.create_issue(subject)
+      Redmine.create_issue(subject, desc)
     end
 
     desc 'close ID', 'Close issue #ID.'
