@@ -4,18 +4,18 @@ require 'thor'
 module Ledmine
   class Issues < Thor
 
-    desc 'view', 'View issue.'
+    desc 'view ID', 'View issue #ID.'
     def view(id)
       issue = JSON.parse(Redmine.get_issue(id))
       say("#" + issue["issue"]["id"].to_s + " " + issue["issue"]["subject"])
     end
 
-    desc 'create', 'Create issue.'
+    desc 'create SUBJECT', 'Create issue.'
     def create(subject)
       Redmine.create_issue(subject)
     end
 
-    desc 'close', 'Close issue.'
+    desc 'close ID', 'Close issue #ID.'
     def close(id)
       Redmine.close_issue(id)
     end
