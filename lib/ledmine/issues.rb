@@ -10,8 +10,8 @@ module Ledmine
       say("#" + issue["issue"]["id"].to_s + " " + issue["issue"]["subject"])
     end
 
-    desc 'create SUBJECT', 'Create issue.'
-    def create(subject)
+    desc 'create SUBJECT [DESC]', 'Create issue.'
+    def create(subject, desc = "")
       Redmine.create_issue(subject)
     end
 
