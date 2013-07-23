@@ -33,7 +33,7 @@ module Ledmine
       puts JSON.pretty_generate(@config)
     end
 
-    register(Ledmine::Issues, "issues", "issues [SOMETHING]", "View details. [default] issues.")
+    register Ledmine::Issues, :issues, "issues [SOMETHING]", "Issues."
     
     def initialize(*args)
       super
