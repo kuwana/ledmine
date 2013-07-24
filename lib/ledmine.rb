@@ -15,28 +15,7 @@ module Ledmine
 
     desc "init", "Generate ~/#{LEDMINE_CONFIG_FILENAME} interactive."
     def init()
-      begin
-        json = {}
-        redmine = {}
-        say "Redimne Settings"
-
-        uri = URI.parse( ask("redmine url:") )
-
-        redmine["url"] = uri.scheme.to_s + "://" + uri.hostname.to_s + uri.path.to_s + "/"
-        redmine["api_key"] = ask("api key:")
-        redmine["default_project_id"] = ask("default project id or key:")
-
-        json["default"] = redmine
-
-        File.open(ENV["HOME"] + "/#{LEDMINE_CONFIG_FILENAME}", 'w') do |file|
-          file.write( JSON.pretty_generate( json ) )
-        end
-
-        say "Generated ~/#{LEDMINE_CONFIG_FILENAME}", :green
-      rescue URI::InvalidURIError => err
-        say "Invalid URL string.", :red
-        say url
-      end
+      generate_json("default")
     end
 
     desc "dump", "Dump ~/#{LEDMINE_CONFIG_FILENAME}."
@@ -54,6 +33,11 @@ module Ledmine
       Ledmine::Issues.new.view(id, options)
     end
 
+    desc "add [NAME]", "Add another redmine."
+    def add(name)
+      generate_json(name)
+    end
+
     register Ledmine::Issues, :issues, "issues [SOMETHING]", "Issues."
 
     def initialize(*args)
@@ -67,6 +51,31 @@ module Ledmine
     private
     def check?()
         return File.exist?(ENV["HOME"]+"/#{LEDMINE_CONFIG_FILENAME}")
+    end
+
+    def generate_json(name)
+      begin
+        json = @config ? @config : {}
+        redmine = {}
+        say "Redimne Settings"
+
+        uri = URI.parse( ask("redmine url:") )
+
+        redmine["url"] = uri.scheme.to_s + "://" + uri.hostname.to_s + uri.path.to_s + "/"
+        redmine["api_key"] = ask("api key:")
+        redmine["default_project_id"] = ask("default project id or key:")
+
+        json[name] = redmine
+
+        File.open(ENV["HOME"] + "/#{LEDMINE_CONFIG_FILENAME}", 'w') do |file|
+          file.write( JSON.pretty_generate( json ) )
+        end
+
+        say "Generated ~/#{LEDMINE_CONFIG_FILENAME}", :green
+      rescue URI::InvalidURIError => err
+        say "Invalid URL string.", :red
+        say url
+      end
     end
   end
 end
