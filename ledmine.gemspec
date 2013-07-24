@@ -24,5 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
 
   spec.add_dependency "thor"
+  spec.add_dependency "addressable"
   spec.add_dependency "json_pure"
 end
