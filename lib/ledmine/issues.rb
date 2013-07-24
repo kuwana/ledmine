@@ -4,10 +4,22 @@ require 'thor'
 module Ledmine
   class Issues < Thor
 
+    method_option :oneline, :type => :boolean, :desc => "Show issue oneline."
     desc 'view ID', 'View issue #ID.'
     def view(id)
       issue = JSON.parse(Redmine.get_issue(id))
-      say("#" + issue["issue"]["id"].to_s + " " + issue["issue"]["subject"])
+      if options[:oneline]
+        say("#" + issue["issue"]["id"].to_s + " " + issue["issue"]["subject"])
+      else
+        say "issue id:\t#" + issue["issue"]["id"].to_s
+        say "project:\t" + issue["issue"]["project"]["name"].to_s
+        say "subject:\t" + issue["issue"]["subject"].to_s
+        say "description:\t" + issue["issue"]["description"].to_s unless issue["issue"]["description"].nil?
+        say "current status:\t" + issue["issue"]["status"]["name"].to_s unless issue["issue"]["status"].nil?
+        say "assigned to:\t" + issue["issue"]["assigned_to"]["name"].to_s unless issue["issue"]["assigned_to"].nil?
+        say "start date:\t" + issue["issue"]["start_date"].to_s unless issue["issue"]["start_date"].nil?
+        say "due date:\t" + issue["issue"]["due_date"].to_s unless issue["issue"]["due_date"].nil?
+      end
     end
 
     method_option :project, :type => :string, :desc => "Set project ID or KEY.", :banner => "<PROJECTID>"
