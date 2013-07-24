@@ -44,6 +44,11 @@ module Ledmine
       say JSON.pretty_generate(@config)
     end
 
+    desc "list", "List. [default issues]"
+    def list()
+      Ledmine::Issues.start
+    end
+
     register Ledmine::Issues, :issues, "issues [SOMETHING]", "Issues."
 
     def initialize(*args)
