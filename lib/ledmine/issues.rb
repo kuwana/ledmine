@@ -40,7 +40,8 @@ module Ledmine
       JSON.parse(Redmine.get_issues())["issues"].each do |issue|
         assigned_to_name = "(Not assigned)" if issue["assigned_to"].nil?
         assigned_to_name = issue["assigned_to"]["name"] unless issue["assigned_to"].nil?
-        say_status(issue["priority"]["name"].to_s, "#" + issue["id"].to_s + s + assigned_to_name + s + issue["subject"], priority_on_color[ issue["priority"]["id"].to_s ].to_sym)
+        say issue["priority"]["name"].to_s, priority_on_color[ issue["priority"]["id"].to_s ].to_sym, nil
+        say "\t#" + issue["id"].to_s + s + assigned_to_name + s + issue["subject"]
       end
     end
   end
