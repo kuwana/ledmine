@@ -29,7 +29,7 @@ module Ledmine
     desc 'list', 'List issues.'
     def list()
         s = options[:csv] ? "," : "\t"
-        say("issue no" + s + "assinged to" + s + "title")
+        say("issue no" + s + "assinged to" + s + "title", :yellow)
         JSON.parse(Redmine.get_issues())["issues"].each do |issue|
           assigned_to_name = "(Not assigned)" if issue["assigned_to"].nil?
           assigned_to_name = issue["assigned_to"]["name"] unless issue["assigned_to"].nil?
