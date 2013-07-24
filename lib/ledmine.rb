@@ -46,7 +46,12 @@ module Ledmine
 
     desc "list", "List. [default issues]"
     def list()
-      Ledmine::Issues.start
+      Ledmine::Issues.new.list()
+    end
+
+    desc "view", "View."
+    def view(id)
+      Ledmine::Issues.new.view(id, options)
     end
 
     register Ledmine::Issues, :issues, "issues [SOMETHING]", "Issues."
