@@ -58,15 +58,14 @@ module Ledmine
 
     def initialize(*args)
       super
-      if ( check() )
-        @config = open(ENV["HOME"]+"/#{LEDMINE_CONFIG_FILENAME}") do |config|
-          JSON.load(config)
-          end
+      self.init() unless check?()
+      @config = open(ENV["HOME"]+"/#{LEDMINE_CONFIG_FILENAME}") do |config|
+        JSON.load(config)
       end
     end
 
     private
-    def check()
+    def check?()
         return File.exist?(ENV["HOME"]+"/#{LEDMINE_CONFIG_FILENAME}")
     end
   end
