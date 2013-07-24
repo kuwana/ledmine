@@ -10,7 +10,7 @@ module Ledmine
       say("#" + issue["issue"]["id"].to_s + " " + issue["issue"]["subject"])
     end
 
-    method_option :project, :type => :string, :desc => "Set project ID or KEY."
+    method_option :project, :type => :string, :desc => "Set project ID or KEY.", :banner => "<PROJECTID>"
     desc 'create SUBJECT [DESC]', 'Create issue.'
     def create(subject, desc = nil)
       create_options = {}
