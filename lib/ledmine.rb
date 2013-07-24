@@ -4,6 +4,8 @@ require 'ledmine/issues'
 require 'json'
 require 'thor'
 
+require 'uri'
+
 module Ledmine
   attr_accessor :config
   class CLI < Thor
@@ -13,26 +15,33 @@ module Ledmine
 
     desc "init", "Generate ~/#{LEDMINE_CONFIG_FILENAME} interactive."
     def init()
-      json = {}
-      redmine = {}
-      say('Redimne Settings')
+      begin
+        json = {}
+        redmine = {}
+        say "Redimne Settings"
 
-      redmine['url'] = ask("redmine url:")
-      redmine['api_key'] = ask("api key:")
-      redmine['default_project_id'] = ask("default project id or key:")
+        uri = URI.parse( ask("redmine url:") )
 
-      json["default"] = redmine
+        redmine["url"] = uri.scheme.to_s + "://" + uri.hostname.to_s + uri.path.to_s + "/"
+        redmine["api_key"] = ask("api key:")
+        redmine["default_project_id"] = ask("default project id or key:")
 
-      File.open(ENV["HOME"] + "/#{LEDMINE_CONFIG_FILENAME}", 'w') do |file|
-        file.write( JSON.pretty_generate( json ) )
+        json["default"] = redmine
+
+        File.open(ENV["HOME"] + "/#{LEDMINE_CONFIG_FILENAME}", 'w') do |file|
+          file.write( JSON.pretty_generate( json ) )
+        end
+
+        say "Generated ~/#{LEDMINE_CONFIG_FILENAME}", :green
+      rescue URI::InvalidURIError => err
+        say "Invalid URL string.", :red
+        say url
       end
-
-      say("Generated ~/#{LEDMINE_CONFIG_FILENAME}")
     end
 
     desc "dump", "Dump ~/#{LEDMINE_CONFIG_FILENAME}."
     def dump()
-      say(JSON.pretty_generate(@config))
+      say JSON.pretty_generate(@config)
     end
 
     register Ledmine::Issues, :issues, "issues [SOMETHING]", "Issues."
