@@ -10,9 +10,14 @@ module Ledmine
       say("#" + issue["issue"]["id"].to_s + " " + issue["issue"]["subject"])
     end
 
+    method_option :project, :type => :string, :desc => "Set project ID or KEY."
     desc 'create SUBJECT [DESC]', 'Create issue.'
-    def create(subject, desc = "")
-      Redmine.create_issue(subject, desc)
+    def create(subject, desc = nil)
+      create_options = {}
+      create_options["description"] = desc unless desc.nil?
+      create_options["project_id"] = options[:project] unless options[:project].nil?
+
+      Redmine.create_issue(subject, create_options)
     end
 
     desc 'close ID', 'Close issue #ID.'

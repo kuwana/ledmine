@@ -47,23 +47,23 @@ module Ledmine
       }
     end
 
-    def self.create_issue(subject, desc, account = "default")
+    def self.create_issue(subject, options = {}, account = "default")
       self.load_config()
       config = @config[account]
       url = URI.parse( config["url"] + "issues.json" )
+
+      issues = {}
+      issues["subject"] = subject
+      issues["project_id"] = config["default_project_id"]
+      issues.merge!( options )
+
       http = Net::HTTP.new(url.host, url.port)
       http.start{|http|
         req = Net::HTTP::Post.new(url.path)
         req.add_field 'Accept', 'application/json'
         req.add_field 'Content-Type', 'application/json'
         req.add_field 'X-Redmine-API-Key', config["api_key"]
-        req.body = {
-            "issue" => {
-              "project_id" => config["default_project_id"],
-              "subject" => subject,
-              "description" => desc
-            }
-        }.to_json
+        req.body = { "issue" => issues }.to_json
         res = http.request(req)
         return res.body
       }
