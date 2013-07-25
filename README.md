@@ -33,6 +33,7 @@ Or install it yourself as:
 
     $ ledmine issues list # View issues list.
     $ ledmine issues create SUBJECT [DESCRIPTION] # Create issues.
+    $ cat /path/to/file | ledmine issues create SUBJECT --pipe # Create issues and STDIN to description.
     $ ledmine issues close ID # Close issue.
     $ ledmine issues view ID # View issue ID.
 
