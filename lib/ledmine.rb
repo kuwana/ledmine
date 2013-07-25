@@ -31,6 +31,7 @@ module Ledmine
     end
 
     method_option :account, :type => :string, :default => "default"
+    method_option :oneline, :type => :boolean, :desc => "Show issue oneline."
     desc "view ID", "View. [default is SUBCOMMAND: issues view ID]"
     def view(id)
       invoke Ledmine::Issues, :view, [id], options
