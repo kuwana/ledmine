@@ -8,7 +8,7 @@ module Ledmine
     method_option :oneline, :type => :boolean, :desc => "Show issue oneline."
     desc 'view ID', 'View issue #ID.'
     def view(id)
-      issue = JSON.parse(Redmine.get_issue(id, options[:account]))
+      issue = JSON.parse(Redmine.get_issue(id, options))
       if options[:oneline]
         say("#" + issue["issue"]["id"].to_s + " " + issue["issue"]["subject"])
       else

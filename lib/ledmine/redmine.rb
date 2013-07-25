@@ -14,9 +14,9 @@ module Ledmine
       end
     end
 
-    def self.get_issue(id, account = "default")
+    def self.get_issue(id, options)
       self.load_config()
-      config = @config[account]
+      config = @config[options[:account]]
       url = URI.parse( config["url"] + "issues/" + id + ".json" )
       http = Net::HTTP.new(url.host, url.port)
       http.start{|http|
