@@ -18,7 +18,23 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### General
+
+    $ ledmine # Show help.
+    $ ledmine init # Generate config file.
+    $ ledmine dump # Dump config file.
+    $ ledmine add ACCOUNT # Add another redmine account.
+    $ ledmine list # View issues list.
+    $ ledmine view ID # View issue ID.
+
+### Subcommand
+
+#### issues
+
+    $ ledmine issues list # View issues list.
+    $ ledmine issues create SUBJECT [DESCRIPTION] # Create issues.
+    $ ledmine issues close ID # Close issue.
+    $ ledmine issues view ID # View issue ID.
 
 ## Contributing
 
