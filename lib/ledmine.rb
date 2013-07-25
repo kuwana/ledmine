@@ -23,14 +23,16 @@ module Ledmine
       say JSON.pretty_generate(@config)
     end
 
+    method_option :account, :type => :string, :default => "default"
     desc "list", "List. [default is SUBCOMMAND: issues list]"
     def list()
-      Ledmine::Issues.new.list()
+      invoke Ledmine::Issues, :list, [], options
     end
 
+    method_option :account, :type => :string, :default => "default"
     desc "view ID", "View. [default is SUBCOMMAND: issues view ID]"
     def view(id)
-      Ledmine::Issues.new.view(id, options)
+      invoke Ledmine::Issues, :view, [id], options
     end
 
     desc "add [NAME]", "Add another redmine account."

@@ -4,10 +4,11 @@ require 'thor'
 module Ledmine
   class Issues < Thor
 
+    method_option :account, :type => :string, :desc => "Other account name.", :default => "default"
     method_option :oneline, :type => :boolean, :desc => "Show issue oneline."
     desc 'view ID', 'View issue #ID.'
     def view(id)
-      issue = JSON.parse(Redmine.get_issue(id))
+      issue = JSON.parse(Redmine.get_issue(id, options[:account]))
       if options[:oneline]
         say("#" + issue["issue"]["id"].to_s + " " + issue["issue"]["subject"])
       else
@@ -22,6 +23,7 @@ module Ledmine
       end
     end
 
+    method_option :account, :type => :string, :desc => "Other account name.", :default => "default"
     method_option :project, :type => :string, :desc => "Set project ID or KEY.", :banner => "<PROJECTID>"
     desc 'create SUBJECT [DESC]', 'Create issue.'
     def create(subject, desc = nil)
@@ -29,14 +31,16 @@ module Ledmine
       create_options["description"] = desc unless desc.nil?
       create_options["project_id"] = options[:project] unless options[:project].nil?
 
-      Redmine.create_issue(subject, create_options)
+      Redmine.create_issue(subject, create_options, options[:account])
     end
 
+    method_option :account, :type => :string, :desc => "Other account name.", :default => "default"
     desc 'close ID', 'Close issue #ID.'
     def close(id)
-      Redmine.close_issue(id)
+      Redmine.close_issue(id, options[:account])
     end
 
+    method_option :account, :type => :string, :desc => "Other account name.", :default => "default"
     method_option :csv, :type => :boolean
     desc 'list', 'List issues.'
     def list()
@@ -49,9 +53,8 @@ module Ledmine
         "5" => "on_red"
       }
       say("priority" + s + "no" + s + "assinged" + s + "title", :yellow)
-      JSON.parse(Redmine.get_issues())["issues"].each do |issue|
-        assigned_to_name = "(Not assigned)" if issue["assigned_to"].nil?
-        assigned_to_name = issue["assigned_to"]["name"] unless issue["assigned_to"].nil?
+      JSON.parse(Redmine.get_issues(options[:account]))["issues"].each do |issue|
+        assigned_to_name = issue["assigned_to"] ? issue["assigned_to"]["name"] : "(Not assigned)"
         say issue["priority"]["name"].to_s, priority_on_color[ issue["priority"]["id"].to_s ].to_sym, nil
         say "\t#" + issue["id"].to_s + s + assigned_to_name + s + issue["subject"]
       end
