@@ -25,14 +25,23 @@ module Ledmine
 
     method_option :account, :type => :string, :default => "default", :desc => "Set accounts name.", :aliases => "-a"
     method_option :project, :type => :string, :desc => "Set project ID or KEY.", :banner => "<PROJECTID>"
-    desc 'create SUBJECT [DESC]', 'Create issue.'
+    method_option :pipe, :type => :boolean, :desc => "pipline"
+    desc "create SUBJECT [DESC]", "Create issue."
     def create(subject, desc = nil)
       create_options = {}
-      create_options["description"] = desc unless desc.nil?
-      create_options["project_id"] = options[:project] unless options[:project].nil?
-      create_options.merge!( options )
+      #raise Thor::Error if File.pipe?(STDIN) || File.select([STDIN], [], [], 0) != nil && desc # STDIN is true and set desc args
+      if (File.pipe?(STDIN) || File.select([STDIN], [], [], 0) != nil) && options[:pipe] then # STDIN is true 
+          while line = STDIN.gets
+            create_options[:description] = String.new unless create_options.key?(:description)
+            create_options[:description] << %Q{#{line}}
+          end
+      else
+          create_options[:description] = desc unless desc.nil?
+      end
+      create_options[:project_id] = options[:project] unless options[:project].nil?
+      options.merge! ( create_options )
 
-      Redmine.create_issue(subject, create_options)
+      Redmine.create_issue(subject, options)
     end
 
     method_option :account, :type => :string, :default => "default", :desc => "Set accounts name.", :aliases => "-a"
