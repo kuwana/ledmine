@@ -41,6 +41,7 @@ module Ledmine
     end
 
     method_option :account, :type => :string, :desc => "Other account name.", :default => "default"
+    method_option :number, :type => :numeric, :default => 25, :desc => "Limits the number of issues or others to show.", :aliases => "-n"
     method_option :csv, :type => :boolean
     desc 'list', 'List issues.'
     def list()
@@ -53,7 +54,7 @@ module Ledmine
         "5" => "on_red"
       }
       say("priority" + s + "no" + s + "assinged" + s + "title", :yellow)
-      JSON.parse(Redmine.get_issues(options[:account]))["issues"].each do |issue|
+      JSON.parse(Redmine.get_issues(options))["issues"].each do |issue|
         assigned_to_name = issue["assigned_to"] ? issue["assigned_to"]["name"] : "(Not assigned)"
         say issue["priority"]["name"].to_s, priority_on_color[ issue["priority"]["id"].to_s ].to_sym, nil
         say "\t#" + issue["id"].to_s + s + assigned_to_name + s + issue["subject"]

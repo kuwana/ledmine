@@ -29,15 +29,17 @@ module Ledmine
       }
     end
 
-    def self.get_issues(account = "default")
+    def self.get_issues(options)
       self.load_config()
-      config = @config[account]
+      config = @config[options[:account]]
       url = Addressable::URI.parse( config["url"] + "issues.json" )
       url.query_values = {
         "assigned_to_id" => "me",
         "sort" => "priority:desc,updated_on:desc",
-        "key" => config["api_key"]
+        "key" => config["api_key"],
+        "limit" => options[:number]
       }
+      url.query_values.merge!(options)
 
       http = Net::HTTP.new(url.host, url.port)
 

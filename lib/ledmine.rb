@@ -24,6 +24,7 @@ module Ledmine
     end
 
     method_option :account, :type => :string, :default => "default"
+    method_option :number, :type => :numeric, :default => 25, :desc => "Limits the number of issues or others to show.", :aliases => "-n"
     desc "list", "List. [default is SUBCOMMAND: issues list]"
     def list()
       invoke Ledmine::Issues, :list, [], options
