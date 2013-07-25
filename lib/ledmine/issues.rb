@@ -30,14 +30,15 @@ module Ledmine
       create_options = {}
       create_options["description"] = desc unless desc.nil?
       create_options["project_id"] = options[:project] unless options[:project].nil?
+      create_options.merge!( options )
 
-      Redmine.create_issue(subject, create_options, options[:account])
+      Redmine.create_issue(subject, create_options)
     end
 
     method_option :account, :type => :string, :default => "default", :desc => "Set accounts name.", :aliases => "-a"
     desc 'close ID', 'Close issue #ID.'
     def close(id)
-      Redmine.close_issue(id, options[:account])
+      Redmine.close_issue(id, options)
     end
 
     method_option :account, :type => :string, :default => "default", :desc => "Set accounts name.", :aliases => "-a"
