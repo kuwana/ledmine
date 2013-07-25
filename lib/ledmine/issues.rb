@@ -43,6 +43,7 @@ module Ledmine
 
     method_option :account, :type => :string, :default => "default", :desc => "Set accounts name.", :aliases => "-a"
     method_option :number, :type => :numeric, :default => 25, :desc => "Limits the number of issues or others to show.", :aliases => "-n"
+    method_option :sort, :type => :hash, :default => {'priority' => 'desc','updated_on' => 'desc'}, :desc => "Sort.", :aliases => "-s"
     method_option :csv, :type => :boolean
     desc 'list', 'List issues.'
     def list()

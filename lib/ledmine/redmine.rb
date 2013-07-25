@@ -30,12 +30,16 @@ module Ledmine
     end
 
     def self.get_issues(options = {})
+      sort = []
+      options[:sort].each { |key, value|
+        sort << key + ":" + value
+      }
       self.load_config()
       config = @config[options[:account]]
       url = Addressable::URI.parse( config["url"] + "issues.json" )
       url.query_values = {
         "assigned_to_id" => "me",
-        "sort" => "priority:desc,updated_on:desc",
+        "sort" => sort.join(","),
         "key" => config["api_key"],
         "limit" => options[:number]
       }
