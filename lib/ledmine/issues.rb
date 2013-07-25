@@ -4,7 +4,7 @@ require 'thor'
 module Ledmine
   class Issues < Thor
 
-    method_option :account, :type => :string, :desc => "Other account name.", :default => "default"
+    method_option :account, :type => :string, :default => "default", :desc => "Set accounts name.", :aliases => "-a"
     method_option :oneline, :type => :boolean, :desc => "Show issue oneline."
     desc 'view ID', 'View issue #ID.'
     def view(id)
@@ -23,7 +23,7 @@ module Ledmine
       end
     end
 
-    method_option :account, :type => :string, :desc => "Other account name.", :default => "default"
+    method_option :account, :type => :string, :default => "default", :desc => "Set accounts name.", :aliases => "-a"
     method_option :project, :type => :string, :desc => "Set project ID or KEY.", :banner => "<PROJECTID>"
     desc 'create SUBJECT [DESC]', 'Create issue.'
     def create(subject, desc = nil)
@@ -34,13 +34,13 @@ module Ledmine
       Redmine.create_issue(subject, create_options, options[:account])
     end
 
-    method_option :account, :type => :string, :desc => "Other account name.", :default => "default"
+    method_option :account, :type => :string, :default => "default", :desc => "Set accounts name.", :aliases => "-a"
     desc 'close ID', 'Close issue #ID.'
     def close(id)
       Redmine.close_issue(id, options[:account])
     end
 
-    method_option :account, :type => :string, :desc => "Other account name.", :default => "default"
+    method_option :account, :type => :string, :default => "default", :desc => "Set accounts name.", :aliases => "-a"
     method_option :number, :type => :numeric, :default => 25, :desc => "Limits the number of issues or others to show.", :aliases => "-n"
     method_option :csv, :type => :boolean
     desc 'list', 'List issues.'
