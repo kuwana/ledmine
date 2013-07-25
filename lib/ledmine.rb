@@ -23,17 +23,17 @@ module Ledmine
       say JSON.pretty_generate(@config)
     end
 
-    desc "list", "List. [default issues]"
+    desc "list", "List. [default is SUBCOMMAND: issues list]"
     def list()
       Ledmine::Issues.new.list()
     end
 
-    desc "view", "View."
+    desc "view ID", "View. [default is SUBCOMMAND: issues view ID]"
     def view(id)
       Ledmine::Issues.new.view(id, options)
     end
 
-    desc "add [NAME]", "Add another redmine."
+    desc "add [NAME]", "Add another redmine account."
     def add(name)
       generate_json(name)
     end
